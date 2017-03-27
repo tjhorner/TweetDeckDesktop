@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>TweetDeck</title>
+  <link href="stylesheets/main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <!-- We use a webview element so it can't access node resources like the filesystem -->
+  <webview id="tweetdeck" src="https://tweetdeck.twitter.com" frameborder="0"></webview>
+  <div id="offline">you are offline :(</div>
+
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <script src="jquery.min.js"></script>
+  <script src="app.js"></script>
+  <script>if (window.module) module = window.module;</script>
+</body>
+</html>
