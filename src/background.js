@@ -42,7 +42,7 @@ app.on('ready', () => {
     backgroundColor: "#1C6399"
   });
 
-  mainWindow.setMenuBarVisibility(false)
+  // mainWindow.setMenuBarVisibility(false)
   mainWindow.maximize()
 
   mainWindow.loadURL(url.format({

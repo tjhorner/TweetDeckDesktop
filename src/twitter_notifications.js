@@ -35,7 +35,7 @@ var parseNotifications = notifs => {
 }
 
 var getNewNotifications = () => {
-  console.log(csrf, cookies)
+  // console.log(csrf, cookies)
   $.ajax({
     type: "GET",
     url: `https://api.twitter.com/1.1/activity/about_me.json?model_version=7&count=5&since_id=${lastChecked}&skip_aggregation=true&cards_platform=Web-13&include_entities=1&include_user_entities=1&include_cards=1&send_error_codes=1&tweet_mode=extended`,

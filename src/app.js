@@ -1,14 +1,19 @@
 // Here is the starting point for your application code.
 
+ace.config.set("basePath", "ace")
+
 // Small helpers you might want to keep
 import './helpers/context_menu.js';
 import './helpers/external_links.js';
 import './twitter_notifications.js';
+import './ng_app.js';
+
+import { mustacheManager } from './mustache_manager.js';
 
 // All stuff below is just to show you how it works. You can delete all of it.
 import { remote, shell } from 'electron';
 import jetpack from 'fs-jetpack';
-import { greet } from './hello_world/hello_world';
+// import { greet } from './hello_world/hello_world';
 import env from './env';
 // import request from 'request';
 
@@ -46,17 +51,9 @@ tweetdeck.addEventListener("did-finish-load", () => {
   tweetdeck.getWebContents().on("new-window", (event, url) => {
     shell.openExternal(url)
   })
+
+  var custMustaches = mustacheManager.getMustaches()
+
+  for(var name in custMustaches)
+    tweetdeck.getWebContents().send("custom-mustache", [name, custMustaches[name]])
 })
-
-const checkOnline = () => {
-  if(navigator.onLine){
-    if(!tweetdeckLoaded) tweetdeck.reload()
-    $("#offline").removeClass("show")
-  }else{
-    $("#offline").addClass("show")
-  }
-}
-
-window.addEventListener('online', checkOnline)
-window.addEventListener('offline', checkOnline)
-checkOnline()

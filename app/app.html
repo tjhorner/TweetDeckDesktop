@@ -1,18 +1,74 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>TweetDeck</title>
-  <link href="stylesheets/main.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-  <!-- We use a webview element so it can't access node resources like the filesystem -->
-  <webview id="tweetdeck" src="https://tweetdeck.twitter.com" frameborder="0"></webview>
-  <div id="offline">you are offline :(</div>
+  <head>
+    <meta charset="utf-8">
+    <title>TweetDeck</title>
+    <link href="stylesheets/main.css" rel="stylesheet" type="text/css">
+  </head>
+  <body ng-app="tweetdeckApp" ng-controller="appController">
+    <!-- we need node integration for the ipc messenger to work :( -->
+    <webview id="tweetdeck" src="https://tweetdeck.twitter.com" frameborder="0" nodeintegration></webview>
+    <div id="offline" ng-show="offline">you are offline :(</div>
 
-  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-  <script src="jquery.min.js"></script>
-  <script src="app.js"></script>
-  <script>if (window.module) module = window.module;</script>
-</body>
+    <div id="mustache_editor" ng-class="{show: showMustaches}">
+      <div class="edit-modal">
+        <div class="edit-list">
+          <div class="edit-button mono" title="{{ name }}" ng-repeat="(name, content) in mustaches" ng-class="{selected: (currentMustache === name), custom: (customMustaches.indexOf(name) !== -1)}" ng-click="viewMustache(name)">
+            {{ name }}
+          </div>
+        </div>
+
+        <div class="edit-content">
+          <div class="content-header" ng-click="showMustaches = false">
+            {{ currentMustache || "Mustache Editor" }}
+          </div>
+
+          <div class="ace" ui-ace="{
+            mode: 'html',
+            showGutter: false,
+            useWrapMode: true
+          }" ng-model="mustacheContent"></div>
+
+          <div class="content-footer">
+            <button ng-click="saveMustache()">Save Template</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="theme_editor" ng-class="{show: showThemes}">
+      <div class="edit-modal">
+        <div class="edit-list">
+          <div class="edit-button" title="{{ name }}" ng-repeat="(index, theme) in themes" ng-class="{selected: (currentTheme === index)}" ng-click="viewTheme(index)">
+            {{ name }}
+          </div>
+        </div>
+
+        <div class="edit-content">
+          <div class="content-header" ng-click="showThemes = false">
+            {{ currentTheme || "Theme Editor" }}
+          </div>
+
+          <div class="ace" ui-ace="{
+            mode: 'css',
+            showGutter: false,
+            useWrapMode: true
+          }" ng-model="themeContent"></div>
+
+          <div class="content-footer">
+            <button ng-click="saveTheme()">Save Theme</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="jquery.min.js"></script>
+    <script src="angular.min.js"></script>
+    <script src="ace/ace.min.js"></script>
+    <script src="ui-ace.min.js"></script>
+    <script src="beautify-html.min.js"></script>
+    <script src="app.js"></script>
+    <script>if (window.module) module = window.module;</script>
+  </body>
 </html>
